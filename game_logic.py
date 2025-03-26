@@ -6,6 +6,32 @@ WORDS = ["python", "git", "github", "snowman", "meltdown"]
 
 DASHES = []
 
+def start_game():
+    pass
+
+
+def game_ended(mistakes, word, secret_word):
+    game_has_ended = False
+
+    if mistakes == 3:
+        print('You lose')
+        game_has_ended = True
+
+    if word == secret_word:
+        print('You win')
+        game_has_ended = True
+        mistakes = 3
+
+    if game_has_ended:
+        input_valid = False
+        while not input_valid:
+            new_game = input('Do you want to play again Y/N: ')
+            if new_game == 'y' or new_game == 'Y':
+                play_game()
+            elif new_game != 'N' and new_game != 'n':
+                input_valid = False
+    return mistakes
+
 
 def display_game_state(mistakes, secret_word, guessed_letters):
     word = ''
@@ -25,12 +51,8 @@ def display_game_state(mistakes, secret_word, guessed_letters):
 
     print()
 
-    if word == secret_word:
-        print('You win')
-        mistakes = 3
+    mistakes = game_ended(mistakes, word, secret_word)
 
-    if mistakes == 3:
-        print('You lose')
     return mistakes
 
 
@@ -41,19 +63,18 @@ def get_random_word():
 
 def play_game():
     mistakes = 0
-    guess = ''
     secret_word = get_random_word()
     print("Welcome to Snowman Meltdown!")
-    print("Secret word selected: " + secret_word)  # for testing, later remove this line
+    print("Secret word selected: " + secret_word)
     for _ in range(len(secret_word)):
         DASHES.append('-')
 
     print(STAGES[0])
     print('_ '*len(secret_word))
-    # TODO: Build your game loop here.
     while mistakes < 3:
-        # For now, simply prompt the user once:
         guess = input("Guess a letter: ").lower()
         if len(guess) < 2 and guess.isalpha():
             mistakes = display_game_state(mistakes, secret_word, guess)
+        else:
+            print('Invalid input please enter 1 letter!')
 
