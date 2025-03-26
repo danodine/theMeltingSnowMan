@@ -54,4 +54,6 @@ def play_game():
     while mistakes < 3:
         # For now, simply prompt the user once:
         guess = input("Guess a letter: ").lower()
-        mistakes = display_game_state(mistakes, secret_word, guess)
+        if len(guess) < 2 and guess.isalpha():
+            mistakes = display_game_state(mistakes, secret_word, guess)
+
